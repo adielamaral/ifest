@@ -33,7 +33,7 @@ public class OwnerService {
         newOwner.setCreatedAt(LocalDateTime.now());
 
         ownerRepository.save(newOwner);
-        log.info("Owner created. Name: {} ID: {} | Document: {}",
+        log.info("Owner created. Name: {} | ID: {} | Document: {}",
                 owner.getName(), newOwner.getId(),  newOwner.getDocument());
     }
 
