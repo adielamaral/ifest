@@ -1,22 +1,15 @@
 package com.ifestapi.model;
 
 import com.ifestapi.enums.Gender;
-import com.ifestapi.enums.Role;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Table(name = "users")
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(of = "id")
+@Data
 public class UserAccount {
 
     @Id
@@ -52,18 +45,5 @@ public class UserAccount {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
-
-
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Enumerated(EnumType.STRING)
-    @CollectionTable(
-            name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id")
-    )
-    @Column(name = "role")
-    private Set<Role> roles = new HashSet<>();
-
-    public boolean isOwner() { return roles.contains(Role.OWNER); }
-    public boolean isAdmin() { return roles.contains(Role.SUPERADMIN); }
 
 }

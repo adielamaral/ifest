@@ -1,30 +1,31 @@
 package com.ifestapi.controller;
 
-import com.ifestapi.enums.Role;
-import com.ifestapi.model.UserAccount;
-import com.ifestapi.repository.UserAccountRepository;
+import com.ifestapi.dto.useraccount.UserAccountRequestDTO;
+import com.ifestapi.dto.useraccount.UserAccountResponseDTO;
+import com.ifestapi.service.UserAccountService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/users")
 @AllArgsConstructor
 public class UserAccountController {
 
-    private final UserAccountRepository userAccountRepository;
+    private final UserAccountService service;
 
     @PostMapping("/register")
-    public UserAccount register(@RequestBody UserAccount user){
-        user.setRoles(Set.of(Role.USER));
-        user.setCreatedAt(LocalDateTime.now());
-        return userAccountRepository.save(user);
+    public ResponseEntity<UserAccountResponseDTO> registerUser(@RequestBody UserAccountRequestDTO dto){
 
+        UserAccountResponseDTO responseDTO = service.create(dto);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(responseDTO);
     }
 
 }
