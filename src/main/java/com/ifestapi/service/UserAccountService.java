@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -26,6 +27,13 @@ public class UserAccountService {
         UserAccount savedAccount = repository.save(account);
 
         return modelMapper.map(savedAccount, UserAccountResponseDTO.class);
+    }
+
+    public List<UserAccountResponseDTO> findAll() {
+        List<UserAccount> users = repository.findAll();
+        return users.stream()
+                .map(findAll -> modelMapper.map(users, UserAccountResponseDTO.class))
+                .toList();
     }
 
 }
