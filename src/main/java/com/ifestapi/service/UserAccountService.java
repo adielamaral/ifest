@@ -2,6 +2,8 @@ package com.ifestapi.service;
 
 import com.ifestapi.dto.useraccount.UserAccountRequestDTO;
 import com.ifestapi.dto.useraccount.UserAccountResponseDTO;
+import com.ifestapi.dto.useraccount.UserAccountUpdateDTO;
+import com.ifestapi.exception.UserNotFoundException;
 import com.ifestapi.model.UserAccount;
 import com.ifestapi.repository.UserAccountRepository;
 import lombok.AllArgsConstructor;
@@ -30,10 +32,20 @@ public class UserAccountService {
     }
 
     public List<UserAccountResponseDTO> findAll() {
-        List<UserAccount> users = repository.findAll();
-        return users.stream()
-                .map(findAll -> modelMapper.map(users, UserAccountResponseDTO.class))
+        return repository.findAll().stream()
+                .map(user -> modelMapper.map(user, UserAccountResponseDTO.class))
                 .toList();
+    }
+
+    public UserAccountResponseDTO updateUser(Long id, UserAccountUpdateDTO updateDTO) {
+        UserAccount user = repository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
+
+        modelMapper.map(updateDTO, user);
+
+        UserAccount updated = repository.save(user);
+
+        return modelMapper.map(updated, UserAccountResponseDTO.class);
     }
 
 }
