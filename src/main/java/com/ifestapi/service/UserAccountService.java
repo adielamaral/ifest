@@ -48,4 +48,11 @@ public class UserAccountService {
         return modelMapper.map(updated, UserAccountResponseDTO.class);
     }
 
+    public void deleteById(Long id) {
+        if (!repository.existsById(id)) {
+            throw new UserNotFoundException(id);
+        }
+        repository.deleteById(id);
+    }
+
 }
