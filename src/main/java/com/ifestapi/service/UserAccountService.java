@@ -2,7 +2,7 @@ package com.ifestapi.service;
 
 import com.ifestapi.dto.useraccount.UserAccountRequestDTO;
 import com.ifestapi.dto.useraccount.UserAccountResponseDTO;
-import com.ifestapi.dto.useraccount.UserAccountUpdateDTO;
+import com.ifestapi.dto.useraccount.UserAccountRequestUpdateDTO;
 import com.ifestapi.exception.UserNotFoundException;
 import com.ifestapi.model.UserAccount;
 import com.ifestapi.repository.UserAccountRepository;
@@ -37,7 +37,7 @@ public class UserAccountService {
                 .toList();
     }
 
-    public UserAccountResponseDTO updateUser(Long id, UserAccountUpdateDTO updateDTO) {
+    public UserAccountResponseDTO updateUser(Long id, UserAccountRequestUpdateDTO updateDTO) {
         UserAccount user = repository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
 

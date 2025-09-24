@@ -4,7 +4,8 @@ import com.ifestapi.enums.Gender;
 import lombok.Data;
 
 @Data
-public class UserAccountUpdateDTO {
+public class UserAccountRequestUpdateDTO {
+
     private String name;
     private String email;
     private String address;
