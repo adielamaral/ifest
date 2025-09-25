@@ -1,8 +1,8 @@
 package com.ifestapi.controller;
 
-import com.ifestapi.dto.owner.OwnerDTO;
-import com.ifestapi.dto.owner.OwnerResponseDTO;
-import com.ifestapi.service.OwnerService;
+import com.ifestapi.dto.event.EventRquestDTO;
+import com.ifestapi.dto.event.EventResponseDTO;
+import com.ifestapi.service.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,19 +12,19 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/owner")
-public class OwnerController {
+@RequestMapping("/event")
+public class EventController {
 
-    private final OwnerService service;
+    private final EventService service;
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody OwnerDTO owner) {
-        service.create(owner);
+    public ResponseEntity<Void> create(@RequestBody EventRquestDTO event) {
+        service.create(event);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<OwnerResponseDTO>> findAll() {
+    public ResponseEntity<List<EventResponseDTO>> findAll() {
         return ResponseEntity.ok(service.findAll());
     }
 }

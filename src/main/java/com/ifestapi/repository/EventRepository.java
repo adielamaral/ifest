@@ -1,11 +1,11 @@
 package com.ifestapi.repository;
 
-import com.ifestapi.model.Owner;
+import com.ifestapi.model.Event;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface OwnerRepository extends JpaRepository<Owner, Long> {
+public interface EventRepository extends JpaRepository<Event, Long> {
 
 
 }
