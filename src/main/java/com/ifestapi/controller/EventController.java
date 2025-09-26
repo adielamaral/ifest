@@ -1,9 +1,7 @@
 package com.ifestapi.controller;
 
-import com.ifestapi.dto.event.EventRquestDTO;
 import com.ifestapi.dto.event.EventResponseDTO;
-import com.ifestapi.dto.useraccount.UserAccountRequestUpdateDTO;
-import com.ifestapi.dto.useraccount.UserAccountResponseDTO;
+import com.ifestapi.dto.event.EventRquestDTO;
 import com.ifestapi.service.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,9 +28,17 @@ public class EventController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserAccountResponseDTO>> findAll() {
-        List<UserAccountResponseDTO> users = service.findAll();
+    public ResponseEntity<List<EventResponseDTO>> findAll() {
+        List<EventResponseDTO> users = service.findAll();
         return ResponseEntity.ok(users);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<EventResponseDTO> updateEvent(
+            @PathVariable Long id,
+            @RequestBody EventRquestDTO updateDTO) {
+        EventResponseDTO updatedEvent = service.updateEvent(id, updateDTO);
+        return ResponseEntity.ok(updatedEvent);
     }
 
 }

@@ -31,7 +31,7 @@ public class Event {
     private LocalDate eventDay;
 
     @Column(nullable = false)
-    private Boolean consentAccepted;
+    private Boolean consentAccepted = false;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -41,7 +41,7 @@ public class Event {
     @Enumerated(EnumType.STRING)
     private EventStatus status;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private UserAccount userAccount;
 }

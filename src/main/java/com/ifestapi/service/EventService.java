@@ -2,11 +2,8 @@ package com.ifestapi.service;
 
 import com.ifestapi.dto.event.EventResponseDTO;
 import com.ifestapi.dto.event.EventRquestDTO;
-import com.ifestapi.dto.useraccount.UserAccountRequestUpdateDTO;
-import com.ifestapi.dto.useraccount.UserAccountResponseDTO;
 import com.ifestapi.exception.UserNotFoundException;
 import com.ifestapi.model.Event;
-import com.ifestapi.model.UserAccount;
 import com.ifestapi.repository.EventRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -25,6 +22,10 @@ public class EventService {
     public EventResponseDTO create(EventRquestDTO eventRquestDTO) {
         Event event = modelMapper.map(eventRquestDTO, Event.class);
 
+        if(event.getConsentAccepted() == null) {
+            event.setConsentAccepted(false);
+        }
+
         event.setCreatedAt(LocalDateTime.now());
         event.setUpdatedAt(LocalDateTime.now());
 
@@ -39,6 +40,17 @@ public class EventService {
         return events.stream()
                 .map(event -> modelMapper.map(event, EventResponseDTO.class))
                 .toList();
+    }
+
+    public EventResponseDTO updateEvent(Long id, EventRquestDTO updateDTO) {
+        Event event = repository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
+
+        modelMapper.map(updateDTO, event);
+
+        Event updatedEvent = repository.save(event);
+
+        return modelMapper.map(updatedEvent, EventResponseDTO.class);
     }
 
 

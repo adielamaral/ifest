@@ -6,8 +6,9 @@ import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-@Table(name = "users")
 @Entity
 @Data
 public class UserAccount {
@@ -45,5 +46,8 @@ public class UserAccount {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "userAccount", cascade = CascadeType.ALL)
+    private List<Event> events = new ArrayList<>();
 
 }

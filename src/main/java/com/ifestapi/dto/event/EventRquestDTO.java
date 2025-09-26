@@ -14,4 +14,6 @@ public class EventRquestDTO {
     private String phoneNumber;
     private LocalDate eventDay;
     private EventStatus status;
+    private Boolean consentAccepted;
+
 }
