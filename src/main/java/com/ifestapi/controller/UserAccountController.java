@@ -1,8 +1,8 @@
 package com.ifestapi.controller;
 
 import com.ifestapi.dto.useraccount.UserAccountRequestDTO;
-import com.ifestapi.dto.useraccount.UserAccountResponseDTO;
 import com.ifestapi.dto.useraccount.UserAccountRequestUpdateDTO;
+import com.ifestapi.dto.useraccount.UserAccountResponseDTO;
 import com.ifestapi.service.UserAccountService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -41,13 +41,6 @@ public class UserAccountController {
             @RequestBody UserAccountRequestUpdateDTO updateDTO) {
         UserAccountResponseDTO updatedUser = service.updateUser(id, updateDTO);
         return ResponseEntity.ok(updatedUser);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(
-            @PathVariable Long id) {
-        service.deleteById(id);
-        return ResponseEntity.noContent().build();
     }
 
 }

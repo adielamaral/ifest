@@ -1,8 +1,8 @@
 package com.ifestapi.service;
 
 import com.ifestapi.dto.useraccount.UserAccountRequestDTO;
-import com.ifestapi.dto.useraccount.UserAccountResponseDTO;
 import com.ifestapi.dto.useraccount.UserAccountRequestUpdateDTO;
+import com.ifestapi.dto.useraccount.UserAccountResponseDTO;
 import com.ifestapi.exception.UserNotFoundException;
 import com.ifestapi.model.UserAccount;
 import com.ifestapi.repository.UserAccountRepository;
@@ -46,13 +46,6 @@ public class UserAccountService {
         UserAccount updated = repository.save(user);
 
         return modelMapper.map(updated, UserAccountResponseDTO.class);
-    }
-
-    public void deleteById(Long id) {
-        if (!repository.existsById(id)) {
-            throw new UserNotFoundException(id);
-        }
-        repository.deleteById(id);
     }
 
 }
