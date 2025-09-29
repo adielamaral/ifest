@@ -47,7 +47,6 @@ public class UserAccount {
 
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "userAccount", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "userAccount", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Event> events = new ArrayList<>();
-
 }

@@ -1,7 +1,7 @@
 package com.ifestapi.controller;
 
 import com.ifestapi.dto.event.EventResponseDTO;
-import com.ifestapi.dto.event.EventRquestDTO;
+import com.ifestapi.dto.event.EventRequestDTO;
 import com.ifestapi.service.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,7 +19,7 @@ public class EventController {
 
     @PostMapping("/register")
     public ResponseEntity<EventResponseDTO> createEvent(
-            @RequestBody EventRquestDTO dto) {
+            @RequestBody EventRequestDTO dto) {
 
         EventResponseDTO responseDTO = service.create(dto);
         return ResponseEntity
@@ -36,7 +36,7 @@ public class EventController {
     @PutMapping("/{id}")
     public ResponseEntity<EventResponseDTO> updateEvent(
             @PathVariable Long id,
-            @RequestBody EventRquestDTO updateDTO) {
+            @RequestBody EventRequestDTO updateDTO) {
         EventResponseDTO updatedEvent = service.updateEvent(id, updateDTO);
         return ResponseEntity.ok(updatedEvent);
     }

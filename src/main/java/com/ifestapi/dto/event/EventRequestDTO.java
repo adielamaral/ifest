@@ -6,7 +6,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-public class EventRquestDTO {
+public class EventRequestDTO {
 
     private String title;
     private String description;
@@ -15,5 +15,6 @@ public class EventRquestDTO {
     private LocalDate eventDay;
     private EventStatus status;
     private Boolean consentAccepted;
+    private Long userAccountId;
 
 }
