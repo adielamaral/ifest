@@ -10,6 +10,7 @@ import com.ifestapi.repository.UserAccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,27 +23,32 @@ public class EventService {
     private final UserAccountRepository userAccountRepository;
     private final ModelMapper modelMapper;
 
-    public EventResponseDTO create(EventRequestDTO eventRequestDTO) {
-        Event event = modelMapper.map(eventRequestDTO, Event.class);
+    public EventResponseDTO create(EventRequestDTO dto) {
+        // Cria novo Event manualmente
+        Event event = new Event();
+        event.setTitle(dto.getTitle());
+        event.setDescription(dto.getDescription());
+        event.setAddress(dto.getAddress());
+        event.setPhoneNumber(dto.getPhoneNumber());
+        event.setEventDay(dto.getEventDay());
+        event.setStatus(dto.getStatus());
+        event.setConsentAccepted(dto.getConsentAccepted());
 
-        UserAccount userAccount = userAccountRepository.findById(eventRequestDTO.getUserAccountId())
-                .orElseThrow(() -> new UserNotFoundException(eventRequestDTO.getUserAccountId()));
-
-        //associa o usuário encontrado ao evento, assim estabelecendo o relacionamento entre as entidades
+        // Vincula UserAccount
+        UserAccount userAccount = userAccountRepository.findById(dto.getUserAccountId())
+                .orElseThrow(() -> new UserNotFoundException(dto.getUserAccountId()));
         event.setUserAccount(userAccount);
 
-        if (event.getConsentAccepted() == null) {
-            event.setConsentAccepted(false);
-        }
 
         event.setCreatedAt(LocalDateTime.now());
         event.setUpdatedAt(LocalDateTime.now());
 
         Event savedEvent = eventRepository.save(event);
 
+        // ModelMapper só para a resposta (Event → EventResponseDTO)
         return modelMapper.map(savedEvent, EventResponseDTO.class);
-
     }
+
 
     public List<EventResponseDTO> findAll() {
         List<Event> events = eventRepository.findAll();
@@ -51,16 +57,30 @@ public class EventService {
                 .toList();
     }
 
+    @Transactional // (tudo ou nada) nas operações que interagem com o banco de dados, evitando inconsistências em caso de falhas
     public EventResponseDTO updateEvent(Long id, EventRequestDTO updateDTO) {
         Event event = eventRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
 
-        modelMapper.map(updateDTO, event);
+        event.setTitle(updateDTO.getTitle());
+        event.setDescription(updateDTO.getDescription());
+        event.setAddress(updateDTO.getAddress());
+        event.setPhoneNumber(updateDTO.getPhoneNumber());
+        event.setEventDay(updateDTO.getEventDay());
+        event.setStatus(updateDTO.getStatus());
+
+//        if (updateDTO.getUserAccountId() != null &&
+//                !event.getUserAccount().getId().equals(updateDTO.getUserAccountId())) {
+//            UserAccount userAccount = userAccountRepository.findById(updateDTO.getUserAccountId())
+//                    .orElseThrow(() -> new UserNotFoundException(updateDTO.getUserAccountId()));
+//            event.setUserAccount(userAccount);
+//        }
+
+        event.setUpdatedAt(LocalDateTime.now());
 
         Event updatedEvent = eventRepository.save(event);
 
         return modelMapper.map(updatedEvent, EventResponseDTO.class);
     }
-
 
 }
