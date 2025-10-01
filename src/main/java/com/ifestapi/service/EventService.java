@@ -23,33 +23,23 @@ public class EventService {
     private final UserAccountRepository userAccountRepository;
     private final ModelMapper modelMapper;
 
+    @Transactional
     public EventResponseDTO create(EventRequestDTO dto) {
-        // Cria novo Event manualmente
-        Event event = new Event();
-        event.setTitle(dto.getTitle());
-        event.setDescription(dto.getDescription());
-        event.setAddress(dto.getAddress());
-        event.setPhoneNumber(dto.getPhoneNumber());
-        event.setEventDay(dto.getEventDay());
-        event.setStatus(dto.getStatus());
-        event.setConsentAccepted(dto.getConsentAccepted());
+        UserAccount userAccount = userAccountRepository.findById(dto.getUserAccount())
+                .orElseThrow(() -> new UserNotFoundException(dto.getUserAccount()));
+        Event event = modelMapper.map(dto, Event.class);
 
-        // Vincula UserAccount
-        UserAccount userAccount = userAccountRepository.findById(dto.getUserAccountId())
-                .orElseThrow(() -> new UserNotFoundException(dto.getUserAccountId()));
         event.setUserAccount(userAccount);
-
 
         event.setCreatedAt(LocalDateTime.now());
         event.setUpdatedAt(LocalDateTime.now());
 
         Event savedEvent = eventRepository.save(event);
 
-        // ModelMapper só para a resposta (Event → EventResponseDTO)
         return modelMapper.map(savedEvent, EventResponseDTO.class);
     }
 
-
+    @Transactional
     public List<EventResponseDTO> findAll() {
         List<Event> events = eventRepository.findAll();
         return events.stream()
@@ -57,7 +47,7 @@ public class EventService {
                 .toList();
     }
 
-    @Transactional // (tudo ou nada) nas operações que interagem com o banco de dados, evitando inconsistências em caso de falhas
+    @Transactional
     public EventResponseDTO updateEvent(Long id, EventRequestDTO updateDTO) {
         Event event = eventRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));

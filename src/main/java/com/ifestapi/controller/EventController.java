@@ -18,8 +18,7 @@ public class EventController {
     private final EventService service;
 
     @PostMapping("/register")
-    public ResponseEntity<EventResponseDTO> createEvent(
-            @RequestBody EventRequestDTO dto) {
+    public ResponseEntity<EventResponseDTO> createEvent(@RequestBody EventRequestDTO dto) {
 
         EventResponseDTO responseDTO = service.create(dto);
         return ResponseEntity

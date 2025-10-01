@@ -15,6 +15,6 @@ public class EventRequestDTO {
     private LocalDate eventDay;
     private EventStatus status;
     private Boolean consentAccepted;
-    private Long userAccountId;
+    private Long userAccount;
 
 }

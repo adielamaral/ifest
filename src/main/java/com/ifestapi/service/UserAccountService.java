@@ -9,6 +9,7 @@ import com.ifestapi.repository.UserAccountRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,6 +21,7 @@ public class UserAccountService {
     private final UserAccountRepository repository;
     private final ModelMapper modelMapper;
 
+    @Transactional
     public UserAccountResponseDTO create(UserAccountRequestDTO requestDTO) {
         UserAccount account = modelMapper.map(requestDTO, UserAccount.class);
 
@@ -31,12 +33,14 @@ public class UserAccountService {
         return modelMapper.map(savedAccount, UserAccountResponseDTO.class);
     }
 
+    @Transactional
     public List<UserAccountResponseDTO> findAll() {
         return repository.findAll().stream()
                 .map(user -> modelMapper.map(user, UserAccountResponseDTO.class))
                 .toList();
     }
 
+    @Transactional
     public UserAccountResponseDTO updateUser(Long id, UserAccountRequestUpdateDTO updateDTO) {
         UserAccount user = repository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
