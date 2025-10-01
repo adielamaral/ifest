@@ -1,8 +1,8 @@
 package com.ifestapi.service;
 
-import com.ifestapi.dto.event.EventResponseDTO;
 import com.ifestapi.dto.event.EventRequestDTO;
-import com.ifestapi.exception.UserNotFoundException;
+import com.ifestapi.dto.event.EventResponseDTO;
+import com.ifestapi.exception.ResourceNotFoundException;
 import com.ifestapi.model.Event;
 import com.ifestapi.model.UserAccount;
 import com.ifestapi.repository.EventRepository;
@@ -26,9 +26,9 @@ public class EventService {
     @Transactional
     public EventResponseDTO create(EventRequestDTO dto) {
         UserAccount userAccount = userAccountRepository.findById(dto.getUserAccount())
-                .orElseThrow(() -> new UserNotFoundException(dto.getUserAccount()));
-        Event event = modelMapper.map(dto, Event.class);
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário", dto.getUserAccount()));
 
+        Event event = modelMapper.map(dto, Event.class);
         event.setUserAccount(userAccount);
 
         event.setCreatedAt(LocalDateTime.now());
@@ -50,21 +50,9 @@ public class EventService {
     @Transactional
     public EventResponseDTO updateEvent(Long id, EventRequestDTO updateDTO) {
         Event event = eventRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(id));
+                .orElseThrow(() -> new ResourceNotFoundException("Evento", id));
 
-        event.setTitle(updateDTO.getTitle());
-        event.setDescription(updateDTO.getDescription());
-        event.setAddress(updateDTO.getAddress());
-        event.setPhoneNumber(updateDTO.getPhoneNumber());
-        event.setEventDay(updateDTO.getEventDay());
-        event.setStatus(updateDTO.getStatus());
-
-//        if (updateDTO.getUserAccountId() != null &&
-//                !event.getUserAccount().getId().equals(updateDTO.getUserAccountId())) {
-//            UserAccount userAccount = userAccountRepository.findById(updateDTO.getUserAccountId())
-//                    .orElseThrow(() -> new UserNotFoundException(updateDTO.getUserAccountId()));
-//            event.setUserAccount(userAccount);
-//        }
+        modelMapper.map(updateDTO, event);
 
         event.setUpdatedAt(LocalDateTime.now());
 

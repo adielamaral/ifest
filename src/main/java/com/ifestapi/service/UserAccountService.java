@@ -3,7 +3,7 @@ package com.ifestapi.service;
 import com.ifestapi.dto.useraccount.UserAccountRequestDTO;
 import com.ifestapi.dto.useraccount.UserAccountRequestUpdateDTO;
 import com.ifestapi.dto.useraccount.UserAccountResponseDTO;
-import com.ifestapi.exception.UserNotFoundException;
+import com.ifestapi.exception.ResourceNotFoundException;
 import com.ifestapi.model.UserAccount;
 import com.ifestapi.repository.UserAccountRepository;
 import lombok.AllArgsConstructor;
@@ -43,7 +43,7 @@ public class UserAccountService {
     @Transactional
     public UserAccountResponseDTO updateUser(Long id, UserAccountRequestUpdateDTO updateDTO) {
         UserAccount user = repository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(id));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário", id));
 
         modelMapper.map(updateDTO, user);
 
