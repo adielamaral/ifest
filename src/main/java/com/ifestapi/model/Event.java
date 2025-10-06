@@ -1,6 +1,6 @@
 package com.ifestapi.model;
 
-import com.ifestapi.enums.Gender;
+import com.ifestapi.enums.EventStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -9,36 +9,40 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-public class Owner {
+public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String title;
 
-    @Column(unique = true, nullable = false)
-    private String document;
+    @Column(nullable = false)
+    private String description;
 
     @Column(nullable = false)
     private String address;
 
-    @Column(unique = true, nullable = false)
-    private String email;
-
     @Column(nullable = false)
     private String phoneNumber;
 
-    private LocalDate birthDate;
+    @Column(nullable = false)
+    private LocalDate eventDay;
 
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
-
-    private Boolean consentAccepted;
+    @Column(nullable = false)
+    private Boolean consentAccepted = false;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    @Enumerated(EnumType.STRING)
+    private EventStatus status;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_account_id", nullable = false)
+    private UserAccount userAccount;
+
 }
